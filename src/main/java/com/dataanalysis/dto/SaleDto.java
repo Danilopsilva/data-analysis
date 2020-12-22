@@ -14,7 +14,7 @@ import java.util.*;
 public class SaleDto {
 
     private Long typeId;
-    private Long saleId;
+    private Integer saleId;
     private List<ItemDto> itemList;
     private String salesmanName;
     private Double totalValue;

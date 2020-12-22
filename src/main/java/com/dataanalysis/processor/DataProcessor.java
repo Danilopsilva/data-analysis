@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.stream.Collectors;
 
 @Component
-public class MakeProcess  {
+public class DataProcessor {
 
     private static final String SELLER_ID = "001";
 
@@ -26,15 +26,16 @@ public class MakeProcess  {
         return list;
     }
 
-    public DataDto make(List<File> data){
+    public DataDto filter(List<File> data){
 
         for (File file : data){
-                 String[] array = separator(file);
+            String[] array = separator(file);
+
             if(array[0].equals(SELLER_ID)) {
                      sellerList.add(DataMapper.makeSeller(array));
                  }else if(array[0].equals(CLIENT_ID)){
                      clientList.add(DataMapper.makeClient(array));
-                } else if(array[0].equals(SALE_ID)){
+                }else if(array[0].equals(SALE_ID)){
                      saleList.add(DataMapper.makeSale(array));
                  }
             }
@@ -47,10 +48,10 @@ public class MakeProcess  {
                     .build();
     }
 
-    public ReportDto makeReport(DataDto data){
+    public ReportDto getData(DataDto data){
         ReportDto reportDto = new ReportDto();
 
-        SaleDto  saleMax = data.getSales().stream().max(Comparator.comparing(SaleDto::getTotalValue)).orElse(null);
+        SaleDto biggestSale = data.getSales().stream().max(Comparator.comparing(SaleDto::getTotalValue)).orElse(null);
 
         String worstSeller = data.getSales().stream().sorted(Comparator.comparingDouble(SaleDto::getTotalValue))
                 .collect(Collectors.toList()).get(0).getSalesmanName();
@@ -58,7 +59,7 @@ public class MakeProcess  {
        return  reportDto.builder()
                 .clientQtd(data.getClients().size())
                 .sellerQtd(data.getSellers().size())
-                .expensiveSaleId(saleMax.getSaleId())
+                .expensiveSaleId(biggestSale.getSaleId())
                 .worstSeller(worstSeller)
                 .build();
     }

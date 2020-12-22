@@ -11,7 +11,7 @@ import org.springframework.core.io.Resource;
 @NoArgsConstructor
 @Builder
 @Data
-public class Report implements ResourceAware{
+public class File implements ResourceAware{
 
     private String line;
     private Resource resource;

@@ -10,7 +10,7 @@ import java.util.*;
 @NoArgsConstructor
 @Builder
 @Data
-public class ReportOutput {
+public class DataDto {
 
     public List<SellerDto> sellers;
     public List<ClientDto> clients;

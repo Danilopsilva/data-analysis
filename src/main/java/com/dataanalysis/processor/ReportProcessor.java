@@ -12,13 +12,14 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 @Component
-public class ReportGenerator {
+public class ReportProcessor {
 
     @Value("file:${user.home}/data/out/")
     private Resource outputFile;
-
     @Autowired
-    private DataProcessor processor;
+    private DataProcessor dataProcessor;
+    
+    private String EXT = ".dat";
 
     public String writeReport(ReportDto report){
 
@@ -52,15 +53,16 @@ public class ReportGenerator {
         return  text.toString();
     }
 
+    private String getFileName() throws IOException {
+        String filePath = String.valueOf(outputFile.getURL().getPath());
+        String fileName = "flat_file_name" + ".done" + EXT;
+        return filePath.concat(fileName);
+    }
+
     public void generate(DataDto dataDto) throws IOException {
 
         BufferedWriter writer = new BufferedWriter(new FileWriter(getFileName(), true));
-        writer.append(writeReport(processor.getData(dataDto)));
+        writer.append(writeReport(dataProcessor.getData(dataDto)));
         writer.close();
-    }
-
-    private String getFileName() throws IOException {
-        String filePath = String.valueOf(outputFile.getURL().getPath());
-        return filePath.concat("flat_file_name").concat(".done").concat(".dat");
     }
 }

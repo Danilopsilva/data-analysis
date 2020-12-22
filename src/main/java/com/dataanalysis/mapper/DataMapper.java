@@ -6,7 +6,7 @@ import com.dataanalysis.dto.SaleDto;
 import com.dataanalysis.dto.SellerDto;
 import java.util.*;
 
-public class BuilderDataMapper {
+public class DataMapper {
 
     private static final String ITEM_SPLIT = "-";
     private static final String ITEM_SEPARATOR = ",";
