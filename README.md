@@ -25,3 +25,7 @@
 - mvn spring-boot:run
 
 
+# Obs: 
+- O projeto foi limitado a ler apenas até 100 mil linhas, apenas para funcionar de maneira ilustrativa limitando o tamanho do arquivo a ser lido.
+
+
