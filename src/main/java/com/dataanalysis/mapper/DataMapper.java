@@ -1,4 +1,4 @@
-package com.dataanalysis.util;
+package com.dataanalysis.mapper;
 
 import com.dataanalysis.dto.ClientDto;
 import com.dataanalysis.dto.ItemDto;
@@ -6,40 +6,44 @@ import com.dataanalysis.dto.SaleDto;
 import com.dataanalysis.dto.SellerDto;
 import java.util.*;
 
-public class BuilderData {
+public class BuilderDataMapper {
 
+    private static final String ITEM_SPLIT = "-";
     private static final String ITEM_SEPARATOR = ",";
-    private static final String ITEM_VALUE_SPLIT = "-";
 
 
-    public static SaleDto makeSale(String[] data){
-        List<ItemDto> items = new ArrayList<>();
-        double totalSale = 0;
-
-        String values = data[2];
-
+    private static double mountItems(List<ItemDto> items, double totalValueSale, String values) {
         if(!values.isEmpty()){
             values = values.replace("[","").replace("]", "");
             List<String> itemList = Arrays.asList(values.split(ITEM_SEPARATOR));
-            for (String value : itemList) {
-                List<String> itemValues = Arrays.asList(value.split(ITEM_VALUE_SPLIT));
+            for (String item : itemList) {
+                List<String> itemValues = Arrays.asList(item.split(ITEM_SPLIT));
                 items.add(ItemDto.builder()
                         .id(Long.valueOf(itemValues.get(0)))
                         .quantity(Integer.parseInt(itemValues.get(1)))
                         .price(Double.parseDouble(itemValues.get(2)))
                         .build());
-                totalSale += Double.parseDouble(itemValues.get(2));
+                totalValueSale += Double.parseDouble(itemValues.get(2));
             }
         }
+        return totalValueSale;
+    }
+
+    public static SaleDto makeSale(String[] data){
+        double totalSale = 0;
+        List<ItemDto> items = new ArrayList<>();
+        String values = data[2];
+        totalSale = mountItems(items, totalSale, values);
 
         return  SaleDto.builder()
                 .typeId(Long.parseLong(data[0]))
-                .saleId(Long.parseLong(data[1]))
+                .saleId(Integer.parseInt(data[1]))
                 .itemList(items)
                 .salesmanName(data[3])
                 .totalValue(totalSale)
                 .build();
     }
+
 
     public static ClientDto makeClient(String[] data){
         return  ClientDto.builder()

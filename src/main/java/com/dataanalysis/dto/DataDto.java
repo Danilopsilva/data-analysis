@@ -12,10 +12,8 @@ import java.util.*;
 @Data
 public class ReportOutput {
 
-    List<SellerDto> sellers;
-
-    List<ClientDto> clients;
-
-    List<SaleDto> sales;
+    public List<SellerDto> sellers;
+    public List<ClientDto> clients;
+    public List<SaleDto> sales;
 
 }
