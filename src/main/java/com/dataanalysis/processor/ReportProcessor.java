@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.Writer;
 
 @Component
 public class ReportProcessor {
@@ -59,10 +60,13 @@ public class ReportProcessor {
         return filePath.concat(fileName);
     }
 
-    public void generate(DataDto dataDto) throws IOException {
+    public void generate(DataDto dataDto){
+        try(Writer writer= new BufferedWriter(new FileWriter(getFileName(), true))){
+            writer.append(writeReport(dataProcessor.getData(dataDto)));
 
-        BufferedWriter writer = new BufferedWriter(new FileWriter(getFileName(), true));
-        writer.append(writeReport(dataProcessor.getData(dataDto)));
-        writer.close();
+        }catch (IOException e)
+        {
+            e.printStackTrace();
+        }
     }
 }
